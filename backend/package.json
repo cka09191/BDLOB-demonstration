@@ -4,8 +4,7 @@
   "description": "Backend server for BDLOB-demonstration",
   "main": "src/index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start": "node src/index.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +16,5 @@
     "cors": "^2.8.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.10"
   }
 }
