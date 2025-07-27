@@ -2,9 +2,9 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Backend server for BDLOB-demonstration",
-  "main": "src/index.js",
+  "main": "src/api-gateway/index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "node src/api-gateway/index.js"
   },
   "keywords": [],
   "author": "",
@@ -12,8 +12,11 @@
   "type": "module",
   "dependencies": {
     "express": "^4.18.2",
-    "axios": "^0.27.2",
-    "cors": "^2.8.5"
+    "ws" : "^8.13.0",
+    "cors": "^2.8.5",
+    "mongoose": "^8.16.5",
+    "dotenv": "^16.5.0",
+    "axios": "^1.5.0"
   },
   "devDependencies": {
   }

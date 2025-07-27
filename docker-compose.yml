@@ -4,9 +4,11 @@ services:
       context: ./backend
       dockerfile: Dockerfile
     ports:
-      - "5005:5005"
+      - "${PORT_BACKEND}:${PORT_BACKEND}"
     environment:
-      MONGO_URI: mongodb://mongo:27017/BTC-USD-DEMO
+      MONGODB_URI: ${MONGODB_URI}
+      PORT_BACKEND: ${PORT_BACKEND}
+      PORT_FRONTEND: ${PORT_FRONTEND}
     depends_on:
       - mongo
   
@@ -15,7 +17,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "5050:5050"
+      - "${PORT_FRONTEND}:${PORT_FRONTEND}"
     environment:
       REACT_APP_API_URL: http://localhost:5005
 
