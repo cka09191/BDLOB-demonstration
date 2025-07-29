@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { WebSocket } from 'ws';
-import express from 'express';
 
-const app = express();
 
 export async function getBTCUSDTPrice(req, res) {
   try {
@@ -13,6 +11,7 @@ export async function getBTCUSDTPrice(req, res) {
     res.status(500).json({ error: 'Could not fetch Binance price.' });
   }
 }
+
 export function streamBTCUSDTPrice(req, res) {
   try {
     const wss = new WebSocket('wss://stream.binance.com:9443/ws/btcusdt@depth');
