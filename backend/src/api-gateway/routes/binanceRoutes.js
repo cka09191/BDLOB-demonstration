@@ -1,5 +1,5 @@
 import express from 'express';
-import { getBTCUSDTPrice, streamBTCUSDTPrice } from '../controllers/binanceControllers.js';
+import { getBTCUSDTPrice, streamBTCUSDTPrice } from '../../services/collectDataService/binanceService.js';
 
 const router = express.Router();
 

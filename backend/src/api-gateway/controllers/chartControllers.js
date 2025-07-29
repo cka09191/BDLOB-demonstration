@@ -1,16 +1,52 @@
-let memo = 'This is a memo';
-export async function getMemo(req, res) {
-    res.json({ message: memo });
+import Chart from '../models/Chart.js';
+
+
+export async function getAllChart(req, res) {
+    try {
+        const charts = await Chart.find();
+        res.json(charts);
+    } catch (error) {
+        console.error('Error fetching charts:', error);
+    }
 }
 
-export async function updateMemo(req, res) {
+export async function getChart(req, res) {
+    try {
+        const { _id } = req.params;
+        const chart = await Chart.findById(_id);
+        if (!chart) {
+            return res.status(404).json({ error: 'Chart not found.' });
+        }
+        res.json(chart);
+    } catch (error) {
+        console.error('Error fetching chart:', error);
+        res.status(500).json({ error: 'Could not fetch chart.' });
+    }
+}
+
+export async function createChart(req, res) {
     try {
         const { title, content } = req.body;
-        memo = `Title: ${title}, Content: ${content}`;
-        res.json({ message: 'Memo updated successfully', memo });
+
+        const chart = new Chart({ title, content });
+        await chart.save();
+        res.status(201).json({ message: 'Chart created successfully', chart });
     } catch (error) {
-        console.error('Error updating memo:', error);
-        res.status(500).json({ error: 'Could not update memo.' });
+        console.error('Error creating chart:', error);
+        res.status(500).json({ error: 'Could not create chart.' });
     }
-    
+}
+
+export async function deleteChart(req, res) {
+    try {
+        const { id } = req.params;
+        const chart = await Chart.findByIdAndDelete(id);
+        if (!chart) {
+            return res.status(404).json({ error: 'Chart not found.' });
+        }
+        res.json({ message: 'Chart deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting chart:', error);
+        res.status(500).json({ error: 'Could not delete chart.' });
+    }
 }

@@ -1,9 +1,11 @@
 import express from 'express';
-import { getMemo, updateMemo } from '../controllers/chartControllers.js';
+import { getAllChart, getChart, createChart, deleteChart} from '../controllers/chartControllers.js';
 
 const router = express.Router();
 
-router.get('/memo', getMemo);
-router.post('/memo', updateMemo);
+router.get('/chart', getAllChart);
+router.get('/chart/:_id', getChart);
+router.post('/chart', createChart);
+router.delete('/chart/:_id', deleteChart);
 
 export default router;
