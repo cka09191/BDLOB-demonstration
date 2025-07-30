@@ -37,6 +37,22 @@ export async function createChart(req, res) {
     }
 }
 
+export async function putChart(req, res) {
+    try {
+        const { _id } = req.params;
+        const { title, content } = req.body;
+
+        const chart = await Chart.findByIdAndUpdate(_id, { title, content }, { new: true });
+        if (!chart) {
+            return res.status(404).json({ error: 'Chart not found.' });
+        }
+        res.json({ message: 'Chart updated successfully', chart });
+    } catch (error) {
+        console.error('Error updating chart:', error);
+        res.status(500).json({ error: 'Could not update chart.' });
+    }
+}
+
 export async function deleteChart(req, res) {
     try {
         const { id } = req.params;
