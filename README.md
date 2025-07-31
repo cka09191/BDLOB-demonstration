@@ -10,7 +10,7 @@ Build and publish a web application that demonstrates the model on BDLOB-Impleme
 > 1. Backend
 >- [x] Build prototype that collects the data from the binance API
 >- [x] Implement data storage for collected Binance API data(LOB data)
->- [ ] Develop collecting service from binance API(LOB data)
+>- [x] Develop collecting service from binance API(LOB data)
 >- [ ] Integrate the BDLOB model from the BDLOB-Implementation repository
 >- [ ] Develop a prediction service that combines collected data with the BDLOB model
 >- [ ] Check if the project follows the best practices
