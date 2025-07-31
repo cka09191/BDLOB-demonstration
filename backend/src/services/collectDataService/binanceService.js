@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { WebSocket } from 'ws';
-
+import LOBCollectorService from './LOBCollectorService.js';
 
 export async function getBTCUSDTPrice(req, res) {
   try {
@@ -9,6 +9,20 @@ export async function getBTCUSDTPrice(req, res) {
   } catch (error) {
     console.error('Error fetching Binance price:', error);
     res.status(500).json({ error: 'Could not fetch Binance price.' });
+  }
+}
+
+export async function getFullOrderBook(req, res) {
+  try {
+    const response = await axios.get('https://api.binance.com/api/v3/depth?symbol=BTCUSDT&limit=1000');
+    res.json({
+      bids: response.data.bids.slice(0, 20).map(([price, quantity]) => [parseFloat(price), parseFloat(quantity)]),
+      asks: response.data.asks.slice(0, 20).map(([price, quantity]) => [parseFloat(price), parseFloat(quantity)]),
+      timestamp: Date.now()
+    });
+  } catch (error) {
+    console.error('Error fetching order book:', error);
+    res.status(500).json({ error: 'Could not fetch order book.' });
   }
 }
 
@@ -44,5 +58,22 @@ export function streamBTCUSDTPrice(req, res) {
   } catch (err) {
     res.status(500).json({ error: 'Error connecting to Binance WebSocket.' });
     console.error('Error connecting to Binance WebSocket:', err);
+  }
+}
+
+// Get current LOB snapshot from the continuous collector
+export function getCurrentLOBFromCollector(req, res) {
+  try {
+    if (!LOBCollectorService.getStatus().isRunning) {
+      return res.status(503).json({ 
+        error: 'LOB collector service is not running. Please start it first.' 
+      });
+    }
+
+    const snapshot = LOBCollectorService.getCurrentSnapshot();
+    res.json(snapshot);
+  } catch (error) {
+    console.error('Error getting LOB snapshot from collector:', error);
+    res.status(500).json({ error: 'Could not get LOB snapshot from collector.' });
   }
 }
