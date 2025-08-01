@@ -12,8 +12,6 @@ class LOBCollectorService {
             bids: new Map(),
             asks: new Map()
         };
-        this.saveInterval = 1000; // Save to DB every 1 second
-        this.saveTimer = null;
     }
 
     start() {
@@ -25,7 +23,6 @@ class LOBCollectorService {
         console.log('Starting LOB Collector Service...');
         this.isRunning = true;
         this.connect();
-        this.startPeriodicSave();
     }
 
     stop() {
@@ -37,10 +34,6 @@ class LOBCollectorService {
             this.ws = null;
         }
         
-        if (this.saveTimer) {
-            clearInterval(this.saveTimer);
-            this.saveTimer = null;
-        }
     }
 
     connect() {
@@ -58,7 +51,9 @@ class LOBCollectorService {
             this.ws.on('message', (data) => {
                 try {
                     const message = JSON.parse(data.toString());
-                    this.processDepthUpdate(message);
+                    if (this.processDepthUpdate(message)) {
+                        this.saveLOBSnapshot();
+                    }
                 } catch (error) {
                     console.error('Error processing WebSocket message:', error);
                 }
@@ -106,7 +101,7 @@ class LOBCollectorService {
     }
 
     processDepthUpdate(data) {
-        if (!data.b || !data.a) return;
+        if (!data.b || !data.a) return false;
 
         // Update bids
         data.b.forEach(([price, quantity]) => {
@@ -131,6 +126,8 @@ class LOBCollectorService {
                 this.orderBook.asks.set(priceNum, quantityNum);
             }
         });
+        return true;
+        
     }
 
     generateLOBSnapshot() {
@@ -181,17 +178,6 @@ class LOBCollectorService {
         }
     }
 
-    startPeriodicSave() {
-        if (this.saveTimer) {
-            clearInterval(this.saveTimer);
-        }
-
-        this.saveTimer = setInterval(() => {
-            if (this.isRunning) {
-                this.saveLOBSnapshot();
-            }
-        }, this.saveInterval);
-    }
 
     // Method to get current order book status
     getStatus() {
