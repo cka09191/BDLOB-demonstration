@@ -9,7 +9,6 @@ import serviceManager from '../services/serviceManager.js';
 const app = express();
 app.use(cors());
 
-connectDB();
 
 app.use(express.json());
 
@@ -17,9 +16,12 @@ app.use('/api/binance', binanceRoutes);
 app.use('/charts', chartRoutes)
 app.use('/lob', LOBRoutes);
 
-const server = app.listen(process.env.PORT_BACKEND, () => {
-    console.log(`Backend on port ${process.env.PORT_BACKEND}`);
-    serviceManager.startAllServices();
+connectDB().then(() => {
+    console.log('Database connected successfully');
+    const server = app.listen(process.env.PORT_BACKEND, () => {
+        console.log(`Backend on port ${process.env.PORT_BACKEND}`);
+        serviceManager.startAllServices();
+    });
 });
 
 // Graceful shutdown
