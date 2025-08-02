@@ -1,5 +1,7 @@
 .env
 .env.*
 !.env.example
-
 .gitignore
+backend/src/services/predictService/BDLOB_model/dataset.py
+backend/src/services/predictService/BDLOB_model/bdlob_model.py
+backend/src/services/predictService/BDLOB_model/test_bdlob_model.py
