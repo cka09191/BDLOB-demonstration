@@ -3,6 +3,7 @@ import cors from 'cors';
 import binanceRoutes from './routes/binanceRoutes.js';
 import chartRoutes from './routes/chartRoutes.js';
 import LOBRoutes from './routes/LOBRoutes.js';
+import predictionRoutes from './routes/predictionRoutes.js';
 import { connectDB } from './config/db.js';
 import serviceManager from '../services/serviceManager.js';
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use('/api/binance', binanceRoutes);
 app.use('/charts', chartRoutes)
 app.use('/lob', LOBRoutes);
+app.use('/predictions', predictionRoutes);
 
 connectDB().then(() => {
     console.log('Database connected successfully');
