@@ -9,9 +9,8 @@ class BDLOBPredictionService {
     constructor() {
         this.isRunning = false;
         this.pythonProcess = null;
-        this.modelPath = path.join(__dirname, 'BDLOB_model');
+        this.modelPath = path.join(__dirname);
         this.predictions = [];
-        this.maxPredictions = 1000; // Keep last 1000 predictions
     }
 
     start() {
@@ -115,10 +114,6 @@ class BDLOBPredictionService {
 
         this.predictions.push(prediction);
 
-        // Keep only the last maxPredictions
-        if (this.predictions.length > this.maxPredictions) {
-            this.predictions = this.predictions.slice(-this.maxPredictions);
-        }
 
         console.log('New prediction received:', prediction);
     }
