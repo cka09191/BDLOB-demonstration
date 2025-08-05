@@ -10,7 +10,7 @@ class BDLOBPredictionService {
         this.isRunning = false;
         this.pythonProcess = null;
         this.modelPath = path.join(__dirname);
-        this.predictions = [];
+        this.pendingRequests = new Map(); // Track pending requests only
     }
 
     start() {
@@ -45,7 +45,7 @@ class BDLOBPredictionService {
         this.pythonProcess.stdout.on('data', (data) => {
             try {
                 const result = JSON.parse(data.toString());
-                this.handlePrediction(result);
+                this.handleResponse(result);
             } catch (error) {
                 console.log('Python output:', data.toString());
             }
@@ -77,56 +77,42 @@ class BDLOBPredictionService {
                 data: lobData
             };
 
-            // Set up one-time listener for this prediction
-            const responseHandler = (data) => {
-                try {
-                    const response = JSON.parse(data.toString());
-                    if (response.id === requestId) {
-                        this.pythonProcess.stdout.removeListener('data', responseHandler);
-                        if (response.error) {
-                            reject(new Error(response.error));
-                        } else {
-                            resolve(response.prediction);
-                        }
-                    }
-                } catch (error) {
-                    // Ignore parsing errors for non-JSON output
-                }
-            };
+            this.pendingRequests.set(requestId, { resolve, reject });
 
-            this.pythonProcess.stdout.on('data', responseHandler);
             this.pythonProcess.stdin.write(JSON.stringify(request) + '\n');
 
             // Timeout after 10 seconds
             setTimeout(() => {
-                this.pythonProcess.stdout.removeListener('data', responseHandler);
+                this.pendingRequests.delete(requestId);
                 reject(new Error('Prediction timeout'));
             }, 10000);
         });
     }
 
-    handlePrediction(result) {
-        // Store prediction with timestamp
-        const prediction = {
-            timestamp: Date.now(),
-            ...result
-        };
-
-        this.predictions.push(prediction);
-
-
-        console.log('New prediction received:', prediction);
-    }
-
-    getRecentPredictions(limit = 100) {
-        return this.predictions.slice(-limit);
+    handleResponse(result) {
+        // Check if this is a response to a pending request
+        if (result.id && this.pendingRequests.has(result.id)) {
+            const { resolve, reject } = this.pendingRequests.get(result.id);
+            this.pendingRequests.delete(result.id);
+            
+            if (result.error) {
+                reject(new Error(result.error));
+            } else {
+                // Just resolve with the prediction, don't store it
+                resolve(result.prediction);
+            }
+        } else {
+            // This might be an automatic/unsolicited prediction
+            console.log('Received unsolicited prediction:', result);
+            // Don't store it here since it's stored in database elsewhere
+        }
     }
 
     getStatus() {
         return {
             isRunning: this.isRunning,
             processRunning: this.pythonProcess !== null,
-            predictionsCount: this.predictions.length
+            pendingRequests: this.pendingRequests.size
         };
     }
 }

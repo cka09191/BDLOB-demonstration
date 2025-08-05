@@ -1,11 +1,13 @@
 import LOBCollectorService from './collectDataService/LOBCollectorService.js';
 import BDLOBPredictionService from './predictService/BDLOBPredictionService.js';
+import PredictionCollectorService from './collectDataService/predictionCollectorService.js';
 
 class ServiceManager {
     constructor() {
         this.services = {
             LOBCollector: LOBCollectorService,
-            BDLOBPrediction: BDLOBPredictionService
+            BDLOBPrediction: BDLOBPredictionService,
+            predictionCollector: PredictionCollectorService
         };
     }
 
@@ -20,6 +22,10 @@ class ServiceManager {
             // Start BDLOB prediction service
             this.services.BDLOBPrediction.start();
             console.log('✓ BDLOB Prediction Service started');
+
+            // Start prediction collector service
+            this.services.predictionCollector.start();
+            console.log('✓ Prediction Collector Service started');
         } catch (error) {
             console.error('✗ Failed to start services:', error);
         }
@@ -34,6 +40,9 @@ class ServiceManager {
 
             this.services.BDLOBPrediction.stop();
             console.log('✓ BDLOB Prediction Service stopped');
+
+            this.services.predictionCollector.stop();
+            console.log('✓ Prediction Collector Service stopped');
         } catch (error) {
             console.error('✗ Failed to stop services:', error);
         }
@@ -42,7 +51,8 @@ class ServiceManager {
     getServicesStatus() {
         return {
             LOBCollector: this.services.LOBCollector.getStatus(),
-            BDLOBPrediction: this.services.BDLOBPrediction.getStatus()
+            BDLOBPrediction: this.services.BDLOBPrediction.getStatus(),
+            predictionCollector: this.services.predictionCollector.getStatus()
         };
     }
 }

@@ -8,6 +8,7 @@ class LOBCollectorService {
         this.reconnectInterval = 5000; // 5 seconds
         this.maxReconnectAttempts = 10;
         this.reconnectAttempts = 0;
+        this.count_repetitions = 0;
         this.orderBook = {
             bids: new Map(),
             asks: new Map()
@@ -171,8 +172,11 @@ class LOBCollectorService {
             const snapshot = this.generateLOBSnapshot();
             const lobDoc = new LOB(snapshot);
             await lobDoc.save();
-            
-            console.log(`LOB snapshot saved at ${new Date(snapshot.timestamp).toISOString()}`);
+            this.count_repetitions++;
+            if (this.count_repetitions >= 100) {
+                console.log(`Saving LOB snapshot... at ${new Date(snapshot.timestamp).toISOString()}`);
+                this.count_repetitions = 0; // Reset counter after saving
+            }
         } catch (error) {
             console.error('Error saving LOB snapshot:', error);
         }
