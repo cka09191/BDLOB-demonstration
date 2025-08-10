@@ -6,8 +6,8 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div data-theme='cupcake'>
-      <h1 className='text-3xl'>BDLOB Demonstration</h1>
+    <div className="min-h-scr een p-8">
+      <h1 className='text-3xl font-bold text-center mb-8'>BDLOB Demonstration</h1>
       
       <div className="max-w-6xl mx-auto">
         <PriceChart />
@@ -19,10 +19,10 @@ function App() {
           >
             Refresh Data: {count}
           </button>
-
         </div>
-        <div className="mt-8 text-center">
-          <input type="radio" name="radio-2" className="radio radio-xs radio-secondary" />
+        
+        <div>
+          <input type="radio" name="radio-2" className="radio radio-xs radio-secondary" defaultChecked />
           <span className="ml-2">Option 1</span>
           <input type="radio" name="radio-2" className="radio radio-xs radio-secondary" />
           <span className="ml-2">Option 2</span>
