@@ -1,30 +1,11 @@
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
+import {LineChart} from '@mui/x-charts/LineChart';
 
 const PriceChart = () => {
   // Fixed sample data for BTC/USDT
   const times = [
-    '09:00', '09:05', '09:10', '09:15', '09:20', '09:25', '09:30', 
-    '09:35', '09:40', '09:45', '09:50', '09:55', '10:00'
+    0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7,
+    0.8, 0.9, 1.0, 1.1, 1.2, 1.3
   ];
   
   const prices = [
@@ -47,37 +28,21 @@ const PriceChart = () => {
     ],
   };
 
-  const options = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-      title: {
-        display: true,
-        text: 'BTC/USDT Price Chart',
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: false,
-        title: {
-          display: true,
-          text: 'Price (USDT)',
-        },
-      },
-      x: {
-        title: {
-          display: true,
-          text: 'Time',
-        },
-      },
-    },
-  };
-
   return (
     <div className="w-full h-96 p-4">
-      <Line data={data} options={options} />
+      <LineChart
+        xAxis={[{ data: times }]}
+        series={[
+          {
+            data: prices,
+            name: 'BTC/USDT Price',
+            color: 'rgb(59, 130, 246)',
+            fill: true,
+            tension: 0.1,
+          },
+        ]}
+        height={400}
+      />
     </div>
   );
 };
