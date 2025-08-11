@@ -32,30 +32,23 @@ const PriceChart = ({ refreshTrigger }) => {
       const data = await response.json();
       
       if (data && data.book && Array.isArray(data.book)) {
-        // Create sequential timestamps
         const timestamps = data.book.map((_, index) => index);
         
-        // Extract best bid and ask prices from each LOB entry
-        // Each book entry contains multiple levels: [[bid1, bidVol1, ask1, askVol1], [bid2, bidVol2, ask2, askVol2], ...]
-        // We want the first level (index 0) which represents the best bid/ask
         const bidPrices = [];
         const askPrices = [];
         
         data.book.forEach(bookEntry => {
-          if (bookEntry && Array.isArray(bookEntry) && bookEntry.length > 0) {
-            const bestLevel = bookEntry[0]; // Get the first (best) price level
-            if (Array.isArray(bestLevel) && bestLevel.length >= 4) {
-              bidPrices.push(bestLevel[0]); // Best bid price
-              askPrices.push(bestLevel[2]); // Best ask price
-            }
+          if (bookEntry && Array.isArray(bookEntry) && bookEntry.length >= 2) {
+            bidPrices.push(bookEntry[0]);
+            askPrices.push(bookEntry[1]);
           }
         });
-        
+        console.log('Fetched LOB data:', timestamps, bidPrices, askPrices);
         if (bidPrices.length > 0 && askPrices.length > 0) {
           setChartData({
-            timestamps: timestamps.slice(0, Math.min(bidPrices.length, askPrices.length)),
-            bidPrices: bidPrices.slice(0, Math.min(bidPrices.length, askPrices.length)),
-            askPrices: askPrices.slice(0, Math.min(bidPrices.length, askPrices.length))
+            timestamps,
+            bidPrices,
+            askPrices
           });
         } else {
           throw new Error('No valid price data found in LOB entries');
