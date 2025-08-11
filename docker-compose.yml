@@ -20,7 +20,10 @@ services:
       - "${PORT_FRONTEND}:${PORT_FRONTEND}"
     environment:
       PORT_FRONTEND: ${PORT_FRONTEND}
-      PORT_BACKEND: ${PORT_BACKEND}
+      # URL_BACKEND: http://localhost:${PORT_BACKEND}
+      VITE_URL_BACKEND: http://localhost:${PORT_BACKEND}
+    depends_on:
+      - backend
 
   mongo:
     image: mongo:latest

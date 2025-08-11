@@ -32,6 +32,7 @@ const LOBSchema = new mongoose.Schema(
         timestamp: {
             type: Number,
             required: true,
+            index: true,    // Add index for timestamp queries
         },
         book: {             // len:=80 array
             type: Array,    // 4(i st bid price, bid volume, ask price, ask volume) * 20 (max i)
@@ -39,6 +40,9 @@ const LOBSchema = new mongoose.Schema(
         }
     }
 )
+
+// Create descending index on timestamp for efficient sorting
+LOBSchema.index({ timestamp: -1 });
 
 const LOB = mongoose.model("LOB", LOBSchema);
 
