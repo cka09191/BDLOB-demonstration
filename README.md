@@ -1,3 +1,7 @@
+
+![Preview of BDLOB-demonstration](documents/Graph.png)
+
+
 # BDLOB-demonstration
 
 Demonstrate the [BDLOB-Implementation](https://github.com/cka09191/BDLOB-Implementation) in the binance BTC/USDT future market with
