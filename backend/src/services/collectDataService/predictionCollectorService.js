@@ -1,5 +1,6 @@
 import Prediction from '../../api-gateway/models/Prediction.js';
 import { makePrediction } from '../../api-gateway/controllers/predictionControllers.js';
+
 class predictionCollectorService {
     constructor() {
         this.ws = null;
@@ -48,7 +49,7 @@ class predictionCollectorService {
             weights: Array.from({ length: 3 }, () => Math.random())
         };  
 
-        // this.savePrediction(prediction);
+        this.savePrediction(prediction);
         console.log('Prediction made:', prediction);
         console.log('prediction:', prediction.prediction);
         console.log('type of prediction:', typeof prediction.prediction);

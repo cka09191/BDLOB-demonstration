@@ -13,6 +13,7 @@ const PredictionSchema = new mongoose.Schema(
         timestamp: {
             type: Number,
             required: true,
+            index: true,    // Add index for timestamp queries
         },
         prediction: {
             type: JSON,
@@ -30,6 +31,9 @@ const PredictionSchema = new mongoose.Schema(
         }
     }
 )
+
+// Create descending index on timestamp for efficient sorting
+PredictionSchema.index({ timestamp: -1 });
 
 const Prediction = mongoose.model("Prediction", PredictionSchema);
 

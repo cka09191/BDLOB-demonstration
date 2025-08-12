@@ -13,24 +13,17 @@ function App() {
     <div className="min-h-screen p-8">
       <h1 className='text-3xl font-bold text-center mb-8'>BDLOB Demonstration</h1>
       
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto bg-white shadow-md rounded-lg p-10 min-h-[700px]">
         <PriceChart refreshTrigger={refreshTrigger} />
         
-        <div className="mt-8 text-center">
-          <button 
-            onClick={handleRefresh} 
-            className="btn btn-primary"
-          >
-            Refresh Data: {refreshTrigger}
-          </button>
-        </div>
-        
-        <div>
-          <input type="radio" name="radio-2" className="radio radio-xs radio-secondary" defaultChecked />
-          <span className="ml-2">Option 1</span>
-          <input type="radio" name="radio-2" className="radio radio-xs radio-secondary" />
-          <span className="ml-2">Option 2</span>
-        </div>
+      </div>
+      <div className="mt-8 text-center">
+        <button 
+          onClick={handleRefresh} 
+          className="btn btn-primary"
+        >
+          Refresh Data: {refreshTrigger}
+        </button>
       </div>
     </div>
   )

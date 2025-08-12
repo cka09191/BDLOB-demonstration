@@ -111,7 +111,8 @@ export async function getBestLatest4500_1s(req, res) {
             timestamp_first: lob[0].timestamp,
             timestamp_last: lob[lob.length - 1].timestamp,
             book: lob.map(item => item.book[0]),
-            count: lob.length
+            count: lob.length,
+            timestamps: lob.map(item => item.timestamp)
         };
         
         if (res === undefined) {

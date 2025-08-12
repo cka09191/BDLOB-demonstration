@@ -17,7 +17,7 @@ Build and publish a web application that demonstrates the model on BDLOB-Impleme
 
 > 2. Frontend
 >- [x] Display a price chart from the data (Best Bid/Ask prices from LOB data)
->- [ ] Indicate the predictions data
+>- [x] Indicate the predictions data
 >- [ ] Improve the chart visualization
 >- [ ] Organize layouts
 >- [ ] Create dashboard that reports the performance(after evaluation)
