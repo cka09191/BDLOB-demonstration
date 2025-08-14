@@ -68,3 +68,13 @@ export const getLatest450sPrediction = async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch latest 450s prediction' });
     }
 }
+
+export const flushExceptLatest450sPrediction = async (req, res) => {
+    try {
+        await Prediction.deleteMany({ timestamp: { $lt: Date.now() - 450000 } });
+        res.status(204).send();
+    } catch (error) {
+        console.error('Error flushing except latest 450s prediction:', error);
+        res.status(500).json({ error: 'Failed to flush except latest 450s prediction' });
+    }
+};

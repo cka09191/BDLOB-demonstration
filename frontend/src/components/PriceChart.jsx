@@ -49,6 +49,9 @@ const PriceChart = ({ refreshTrigger }) => {
       
       const response = await fetch(`${backendUrl}/lob/latest4500_1s`);
       const response_prediction = await fetch(`${backendUrl}/predictions/latest-450s`);
+      //delete the previous predictions
+      await fetch(`${backendUrl}/predictions/latest-450s`, { method: 'DELETE' });
+      await fetch(`${backendUrl}/lob/latest4500`, { method: 'DELETE' });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -67,7 +70,7 @@ const PriceChart = ({ refreshTrigger }) => {
       data.book.forEach(bookEntry => {
         if (bookEntry && Array.isArray(bookEntry) && bookEntry.length >= 2) {
           bidPrices.push(bookEntry[0]); // Best bid price
-          askPrices.push(bookEntry[1]); // Best ask price
+          askPrices.push(bookEntry[2]); // Best ask price
         }
       });
       
@@ -304,7 +307,8 @@ const PriceChart = ({ refreshTrigger }) => {
         },
         ticks: {
           maxTicksLimit: 10,
-        }
+        },
+        min: Date.now() - 450000,
       },
     },
     interaction: {

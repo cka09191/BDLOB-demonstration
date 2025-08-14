@@ -89,13 +89,7 @@ export async function getBestLatest4500_1s(req, res) {
             {
                 $project: {
                     timestamp: 1,
-                    book: {
-                        $map: {
-                            input: "$book",
-                            as: "level",
-                            in: [{ $arrayElemAt: ["$$level", 0] }, { $arrayElemAt: ["$$level", 2] }]
-                        }
-                    }
+                    book: -1
                 }
             }
         ]);
