@@ -1,13 +1,15 @@
 import LOBCollectorService from './collectDataService/LOBCollectorService.js';
 import BDLOBPredictionService from './predictService/BDLOBPredictionService.js';
 import PredictionCollectorService from './collectDataService/predictionCollectorService.js';
+import EvaluationCollectorService from './collectDataService/evaluationCollectorService.js';
 
 class ServiceManager {
     constructor() {
         this.services = {
             LOBCollector: LOBCollectorService,
             BDLOBPrediction: BDLOBPredictionService,
-            predictionCollector: PredictionCollectorService
+            predictionCollector: PredictionCollectorService,
+            evaluationCollector: EvaluationCollectorService
         };
     }
 
@@ -26,6 +28,10 @@ class ServiceManager {
             // Start prediction collector service
             this.services.predictionCollector.start();
             console.log('✓ Prediction Collector Service started');
+
+            // Start evaluation collector service
+            this.services.evaluationCollector.start();
+            console.log('✓ Evaluation Collector Service started');
         } catch (error) {
             console.error('✗ Failed to start services:', error);
         }
@@ -43,6 +49,9 @@ class ServiceManager {
 
             this.services.predictionCollector.stop();
             console.log('✓ Prediction Collector Service stopped');
+
+            this.services.evaluationCollector.stop();
+            console.log('✓ Evaluation Collector Service stopped');
         } catch (error) {
             console.error('✗ Failed to stop services:', error);
         }
@@ -52,7 +61,8 @@ class ServiceManager {
         return {
             LOBCollector: this.services.LOBCollector.getStatus(),
             BDLOBPrediction: this.services.BDLOBPrediction.getStatus(),
-            predictionCollector: this.services.predictionCollector.getStatus()
+            predictionCollector: this.services.predictionCollector.getStatus(),
+            evaluationCollector: this.services.evaluationCollector.getStatus()
         };
     }
 }

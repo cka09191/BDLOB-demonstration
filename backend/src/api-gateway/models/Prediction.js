@@ -16,8 +16,8 @@ const PredictionSchema = new mongoose.Schema(
             index: true,    // Add index for timestamp queries
         },
         prediction: {
-            type: JSON,
-            // enum: ['up', 'down'],
+            type: String,
+            enum: ['up', 'down'],
             required: true,
         },
         confidence: {

@@ -4,6 +4,8 @@ import binanceRoutes from './routes/binanceRoutes.js';
 import chartRoutes from './routes/chartRoutes.js';
 import LOBRoutes from './routes/LOBRoutes.js';
 import predictionRoutes from './routes/predictionRoutes.js';
+import evaluationRoutes from './routes/evaluationRoutes.js';
+import systemRoutes from './routes/systemRoutes.js';
 import { connectDB } from './config/db.js';
 import serviceManager from '../services/serviceManager.js';
 
@@ -17,6 +19,8 @@ app.use('/api/binance', binanceRoutes);
 app.use('/charts', chartRoutes)
 app.use('/lob', LOBRoutes);
 app.use('/predictions', predictionRoutes);
+app.use('/evaluations', evaluationRoutes);
+app.use('/system', systemRoutes);
 
 connectDB().then(() => {
     console.log('Database connected successfully');

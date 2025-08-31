@@ -49,9 +49,6 @@ const PriceChart = ({ refreshTrigger }) => {
       
       const response = await fetch(`${backendUrl}/lob/latest4500_1s`);
       const response_prediction = await fetch(`${backendUrl}/predictions/latest-450s`);
-      //delete the previous predictions
-      await fetch(`${backendUrl}/predictions/latest-450s`, { method: 'DELETE' });
-      await fetch(`${backendUrl}/lob/latest4500`, { method: 'DELETE' });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
